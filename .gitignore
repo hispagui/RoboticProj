@@ -1,3 +1,9 @@
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+
 test.py
 pose_interpolation.gif
 inverse_kinematics_tracking.gif
