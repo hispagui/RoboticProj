@@ -19,7 +19,6 @@ def screw_axis(omega : np.ndarray, q : np.ndarray) -> np.ndarray:
     q = np.asarray(q, float)
     return np.concatenate([-np.cross(omega, q), omega])
 
-
 class Manipulator :
     def __init__(self, screws : np.ndarray, home : np.ndarray, name = "arm", joint_limits = None, draw_points = None):
         self.screws = np.asarray(screws, float).reshape(-1, 6) # revolute joints
@@ -31,7 +30,6 @@ class Manipulator :
         self.joint_limits = (None if joint_limits is None
                              else np.asarray(joint_limits, float).reshape(-1,2)) # possibility to define restriction on joint angles for more realistic results
         self.draw_points = draw_points
-
 
     @classmethod
     def from_revolute(cls, axes_and_points : np.ndarray, home, **kwargs) -> "Manipulator":
@@ -46,13 +44,8 @@ class Manipulator :
             raise ValueError(f"{self.name}: expected {self.dof} joint angles, " f"got {thetas.size}")
         return thetas
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return f"Manipulator(name={self.name!r}, dof={self.dof})"
-
-    def sanity_check(self, pose):
-        # check if pose is accessible by manipulator
-        """TO DO !!!!!"""
-        pass
 
 
     # ---------------------------------------------------------------
@@ -76,7 +69,7 @@ class Manipulator :
     # ---------------------------------------------------------------
     def skeleton(self, thetas : np.ndarray) -> np.ndarray:
         # nb of screws = nb of vertices in skeleton
-        """  check again  """
+        """  check again  ! """
         thetas = self._theta(thetas)
         G = [np.eye(4)]                
         T = np.eye(4)
@@ -96,7 +89,7 @@ class Manipulator :
         # a revolute serial chain can't extend past the sum of its link lengths
         pts = self.skeleton(np.zeros(self.dof))
         p_ee = self.ee_position(np.zeros(self.dof))
-        pts = np.vstack([pts, p_ee])                # make sure the tool tip is included
+        pts = np.vstack([pts, p_ee])  # make sure tool tip is accounted for
         seg = np.linalg.norm(np.diff(pts, axis=0), axis=1)
         return float(seg.sum())
 
@@ -109,9 +102,8 @@ class Manipulator :
 
     def is_reachable(self, T : np.ndarray, pos_tol=1e-4, restarts=8, return_solution=False):
         # decides reachability of pose, (not a proof but strong evidence)
-        # first check radius of sum of lengths of manip. 
-        # then numerical IK check
-
+        # first check radius of sum of lengths of manipulator 
+        # then numerical IK check.
         T = np.asarray(T, float)
         if T.shape != (4, 4):
             raise ValueError("goal pose must be a 4x4 matrix in SE(3)")
@@ -167,7 +159,7 @@ class Manipulator :
         for i in range(self.dof):
             dth = np.zeros(self.dof)
             dth[i] = eps
-            J[:, i] = se3.log(self.fk(thetas + dth) @ se3.inverse(T)) / eps    # infinitessimal movement 
+            J[:, i] = se3.log(self.fk(thetas + dth) @ se3.inverse(T)) / eps  # infinitessimal movement 
         return J
 
     def validate(self, trials=200, seed=0, tol=1e-6) -> float:
@@ -276,7 +268,6 @@ class Manipulator :
             theta = theta + theta_next
         return self._finish_ik(theta), False # maxed out iterations, probably not accurate
 
-
     def _finish_ik(self, theta : np.ndarray) -> np.ndarray:
         # check if joint angles are possible regarding joint_limits
         theta = self._wrap(theta)
@@ -287,13 +278,13 @@ class Manipulator :
     
 
     # ---------------------------------------------------------------
-    # interpolation 
+    # interpolation (! take thetas as argument, not poses !) 
     # ---------------------------------------------------------------
     def geodesic_distance(self, theta_a : float, theta_b : float, length_scale=1.0) -> float:
         # computes geodesic distance (see se3.py)
         geod_dist = se3.geodesic_distance(self.fk(theta_a), self.fk(theta_b), w_rot=length_scale ** 2, w_trans=1.0)
         return geod_dist
-    
+
     def cartesian_trajectory(self, theta_a : float, theta_b : float, n = 20) -> np.ndarray:
         # computes screw interpolate (continuous evolution of pose, see se3)
         Ta , Tb = self.fk(theta_a), self.fk(theta_b)

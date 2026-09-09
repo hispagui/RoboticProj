@@ -1,18 +1,9 @@
 
-Lie Groups and Differential Geomtry
 
-The Lie Groups SO(3) and SE(3)
-
-Riemann Geometry
-
-Homotopy 
+## Lie Theory and Riemannian Geometry
 
 
-## Lie Groups and Differential Geometry
-
-__Definition__ :
-A _tangent vector_ at a point $p$ in a manifold $M$ is a _derivation_ at $p$.
-The tangent vectors at $p$ form a vector space $T_pM$ called the _tangent space_ of $M$ at $p$.
+### SO(3) and SE(3) are Lie groups
 
 __Definition__ :
 A _Lie group_ is a subset $G$ of $\mathbb{R}^n$ such that $G$ is a group and a manifold in $\mathbb{R}^n$ and both the group operation $\cdot : G\rightarrow G$ and the inverse operation $.^{-1}: G\rightarrow G$ are smooth functions.
@@ -22,11 +13,14 @@ A _Lie algebra_ is an algebra $A$ togther with a _Lie bracket_ operator $\[.,.\]
 An important fact is that the Lie algebra $A$ associated to a Lie group $M$ happens to be the tangent space
 at the identity element $1$, that is: $A = T_1M$.
 
-__Definition__ : _Lie bracket_
+__Deffinition__ :
+Lie bracket.
 
+__Examples__ :
+The $3$D rotation group $SO(3)$ is a Lie group (homeomorphic to $\mathbb{RP}^3$).
+The group of rigid motions in $3$D or the special Euclidean group $SE(3)$ is also a Lie group (homeomorphic to $\mathbb{RP}^3 \times \mathbb{R}^3$, not as a group tho !).
+The
 
-
-## SO(3) and SE(3) are Lie groups
 
 __Representations of coordinates (in SO(3))__ :
 \begin{itemize}
@@ -40,7 +34,7 @@ __Representations of coordinates (in SO(3))__ :
 \end{itemize}
 
 
-## Riemannian Geometry
+### Riemannian Geometry
 __Definition__ : 
 Let $M$ be an $n$-dimensional manifold.
 A _Riemannian metric_ on $M$ is a smoothly varying positive-definite inner-product $g_p$ on each tangent space $T_pM$.
@@ -61,8 +55,18 @@ Let $p\in M$ and $v\in T_pM$. We write $\gamma_v:I\rightarrow M$ for the (maxima
 The _exponential map_ at $p$, written $exp_p:U_p\rightarrow M$, is defined by $exp_p(v) = \gamma_v(1)$.
 
 __Remark__ : 
-In the context of Lie groups, the exponential map from the Lie algebra (tangent space) to the corresponding Lie group (manifold).
+In the context of Lie groups, the exponential map is map from the Lie algebra (tangent space) to the corresponding Lie group (manifold).
 There is an "inverse" computation that we call the _logarithm map_ which sends an element from the Lie group (manifold) to the Lie algebra (tangent space).
+These are the exact concepts we used when writting the interpolation functions found in se3.py and so3.py
+
+
+
+
+
+
+
+
+
 
 
 ## Homotopy and Homology theory

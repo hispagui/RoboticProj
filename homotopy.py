@@ -9,7 +9,7 @@ homotopy.py : topological signatures of paths in R^2 minus a set of points (punc
 
                              
                         
-    To add : A* planners and comparisons
+    To add : A* planners and comparisons, and homotopy classes on graphs or cell-complexes
 
 """
 
@@ -17,6 +17,15 @@ import numpy as np
 
 
 # HOMOTOPY (free groups in R^2)
+
+class Paths:
+    def __init__(self, top_space, path : list):
+        self.top_space = top_space
+        self.path = path
+
+    # could be interesting to have paths objects and compare/add,sub them and make some sort of homotopy arithmetic
+
+        
 
 def _segment_crossings(p0 : list, p1 : list, obstacles : list) -> list:
     # crossings regarding vertical rays (like laser beams, with base in obstacles) when going from p0 to p1

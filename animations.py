@@ -126,15 +126,15 @@ class Kins:
         self.skeletons, self.tips, self.hi, self.lo = self.skeleton()
         self.fig, self.ax, self.arm_line = self._geometry()
         
-    def __repr__(self):
+    def __repr__(self) -> str:
         return f"{self.manipulator.__repr__()}, gedodesic distance between start and finish is {self.geod_dist}"
     
-    def _initial_pose(self):
+    def _initial_pose(self) -> np.ndarray:
         # returns initial ee pose
         thetas = np.zeros(self.manipulator.dof)
         return self.manipulator.fk(thetas) # an element in SE(3)
 
-    def _geometry(self):
+    def _geometry(self) -> list:
         fig = plt.figure(figsize=(6.5, 6.5))
         ax = fig.add_subplot(111, projection="3d")
         ax.set_xlim(self.lo[0], self.hi[0]); ax.set_ylim(self.lo[1], self.hi[1]); ax.set_zlim(0, self.hi[2])
@@ -146,15 +146,15 @@ class Kins:
                             markerfacecolor="#D85A30", zorder=5)
         return fig, ax, arm_line
 
-    def _make_screws(self):
+    def _make_screws(self) -> np.ndarray:
         ts = np.linspace(0.0, 1.0, self.N) # number of frames in animation
         screws = [se3.screw_interpolate(self.start, self.goal, t) for t in ts] # list of screws
         return screws
 
-    def skeleton(self):
+    def skeleton(self) -> list:
+        # multiple call to inverse kinematics here
         joint_path = []
         theta_prev = None
-
         for i,S in enumerate(self.screw_path):
             if theta_prev is None:
                 sol, ok = self.manipulator.numerical_ik(S, theta_init=theta_prev)
@@ -177,8 +177,8 @@ class Kins:
 
             if not ok:
                 print(f"warning, frame {i} did not converge")
-            print("iter", i)
 
+            print("iter", i)
             theta_prev = sol.copy()
             joint_path.append(sol.copy())
 
@@ -191,8 +191,6 @@ class Kins:
     def update(self, frame):
         sk = self.skeletons[frame]
         self.arm_line.set_data(sk[:, 0], sk[:, 1]); self.arm_line.set_3d_properties(sk[:, 2])
-        #tip_trail.set_data(self.tips[:frame + 1, 0], self.tips[:frame + 1, 1])
-        #tip_trail.set_3d_properties(self.tips[:frame + 1, 2])
         return self.arm_line
 
     def anim_inverse_kinematics(self):
@@ -228,6 +226,8 @@ my_poses.anim_pose_inerpolation()
 '''
 
 
+
+'''
 def practice_6dof():
     # test encoding of 6r arm (no offset)
     L1, L2, L3, L4 = 0.40, 0.40, 0.20, 0.10 # lengts
@@ -250,6 +250,6 @@ def practice_6dof():
 arm = practice_6dof()
 print(arm)
 T_goal = se3.make(np.eye(3), [0.3, 0.3, 0.7]) # this pose is reachable
-
 animate_arm = Kins(arm, T_goal, N=60)
 animate_arm.anim_inverse_kinematics()
+'''
