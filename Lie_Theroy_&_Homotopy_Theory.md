@@ -23,15 +23,17 @@ The
 
 
 __Representations of coordinates (in SO(3))__ :
-\begin{itemize}
-    \item[-] with 3 angles (_Euler angles_) $\alpha$, $\beta$ and $\gamma$ $\in \[ -\pi, \pi )$, rotation matrices can be composed : $R(\alpha, \beta, \gamma) = R_3(\gamma)R_2(\beta)R_1(\alpha) := f(r)$ 
-    where $r = [\alpha, \beta, \gamma]$
-    \item[-] by _exponential representation_ let $\omega \in \mathbb{R}^3$ be a vector, a rotation in 3D can be expressed by a rotation axis $\omega$ and a rotation angle about that axis $||\omega||$.
-    The matrix exponential of $\omega$ yields the $3\times 3$ skew-symmetric matrix in $SO(3)$.
-    \item _axis_, let $q = (\omega, \alpha)\in \mathbb{R}^4$ with $||\omega|| = 1$, its basically the same idea as above, a rotation of angle of $\alpha$ arround the $\omega$-axis.
-    And Rodrigues' rotation formula maps rotation vector to rotation matrix in $SO(3)$
-    \item[-] _quaternions_, let $q = (w,x,y,z)\in S^3$ (so with $||q||=1$), we set $w = \cos\frac{\theta}{2}$ and $(x,y,z) = \alpha \sin\frac{\theta}{2}$, then as above, we have a rotation of angle $\theta$ arround the axis $\alpha$.
-\end{itemize}
+- With 3 angles (_Euler angles_) $\alpha$, $\beta$ and $\gamma$ $\in \[ -\pi, \pi )$, rotation matrices can be composed : $R(\alpha, \beta, \gamma) = R_3(\gamma)R_2(\beta)R_1(\alpha) := f(r)$ 
+    where $r = [\alpha, \beta, \gamma]$.
+
+- By _exponential representation_ let $\omega \in \mathbb{R}^3$ be a vector, a rotation in 3D can be expressed by a rotation axis $\omega$ and a rotation angle about that axis $||\omega||$.
+The matrix exponential of $\omega$ yields the $3\times 3$ skew-symmetric matrix in $SO(3)$.
+
+- _Axis_, let $q = (\omega, \alpha)\in \mathbb{R}^4$ with $||\omega|| = 1$, its basically the same idea as above, a rotation of angle of $\alpha$ arround the $\omega$-axis.
+And Rodrigues' rotation formula maps rotation vector to rotation matrix in $SO(3)$.
+
+- _Quaternions_, let $q = (w,x,y,z)\in S^3$ (so with $||q||=1$), we set $w = \cos\frac{\theta}{2}$ and $(x,y,z) = \alpha \sin\frac{\theta}{2}$, then as above, we have a rotation of angle $\theta$ arround the axis $\alpha$.
+
 
 
 ### Riemannian Geometry
@@ -45,7 +47,7 @@ We now define what is the analogue of "straight lines" in a Riemannian manifold 
 __Definition__ : 
 Let $\gamma : I \rightarrow M$ be a regular path.
 Consider $D_t: \mathcal{X}(\gamma) \rightarrow \mathcal{X}(\gamma)$ the _covariant derivative along_ $\gamma$.
-The velocity of $\gamma$ (its derivation $t\mapsto \gamma'(t)$) defines a vector field along $\gamma$, we call $D_t\gamma'$ the _acceleration_ of $\gamma$. 
+The velocity of $\gamma$ (its derivation $t \mapsto \gamma'(t)$) defines a vector field along $\gamma$, we call $D_t\gamma'$ the _acceleration_ of $\gamma$. 
 When $D_t\gamma' = 0$, we say that $\gamma$ is a _geodesic_.
 
 The idea is now to use geodesics to "explore" $M$, imagine sending probes with zero acceleration with all different velocities, after one second they report back their positions, giving you a "map" of $M$. Formally :
@@ -77,12 +79,12 @@ __Definition__ : Two paths $\gamma_1$ and $\gamma_2$ are said to be _homotopic_ 
 
 __Definition__ : The _fundamental group_ of a pointed topological space $(X,x)$ denoted $\pi_1(X,x)$ is the group of equivalence classes under homotopy of the loops based at $x$ in $X$.
 
-__Example__ : The fundamental group of $\mathbb{R}^2$ is trivial, $\pi_1(\mathbb{R}^2 - \{p\}) = \mathbb{Z}$ and $\pi_1(\mathbb{R}^2 - \{p_1, p_2, ..., p_n\}) = F_n$ the free group on $n$ generators.
+__Example__ : The fundamental group of $\mathbb{R}^2$ is trivial, $\pi_1(\mathbb{R}^2 - \{p\}) = \mathbb{Z}$ and $\pi_1(\mathbb{R}^2 - \left\{p_1, p_2, ..., p_n \right\}) = F_n$ the free group on $n$ generators.
 
 
-__Definition__ : Let $X$ be a topological space, _chain complexe_ $(C_*, d_*)$ with $d_n : C_n \rightarrow C_{n-1}, each $C_n$ is an abelian group and $d_{n-1} \circ d_n = 0 \forall n$.
-$B_n := \im d_{n+1} and $Z_n := \ker d_n$. 
-Finally $H_n(X) := Z_n /B_n ...
+__Definition__ : Let $X$ be a topological space and $(C_{\star}, d_{\star})$ a _chain complexe_, with $d_n : C_n \rightarrow C_{n-1}, each $C_n$ is an abelian group and $d_{n-1} \circ d_n = 0 \forall n$.
+We define $B_n := \im d_{n+1}$ and $Z_n := \ker\: d_n$ to be respectivelly the group of _boundaries_ and the group of _cycles_.
+Finally $H_n(X) := Z_n /B_n$ is the n$^{th}$ _homology group_.
 
 
-__Theorem (Hurewicz)__ : For $X$ connected, there exists a homomorphism $h : \pi_1(X) \rightarrow H_1(X)$ which is surjective and $\ker h = [\pi_1(X), \pi_1(X)]$ the commutator subgroup. This implies that the abelianisation of the first fundamental group is isomorphic to the first homology group, $\pi_1(X)^{ab} \cong H_1(X)$.
+__Theorem (Hurewicz)__ : For $X$ connected, there exists a homomorphism $h : \pi_1(X) \rightarrow H_1(X)$ which is surjective and $\ker \: h = [\pi_1(X), \pi_1(X)]$ the commutator subgroup. This implies that the abelianisation of the first fundamental group is isomorphic to the first homology group, $\pi_1(X)^{ab} \cong H_1(X)$.
