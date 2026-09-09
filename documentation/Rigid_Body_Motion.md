@@ -1,5 +1,5 @@
-These notes are made using the incredibly weel written _Modern Robotics : Mechanics, Plannning and Control_ by Kevin M. Lynch and Frank C. Park.
-(freely available on ...)
+These notes are inspired by the incredibly weel written book _Modern Robotics : Mechanics, Plannning and Control_ by Kevin M. Lynch and Frank C. Park.
+(freely available on [https://hades.mech.northwestern.edu/images/7/7f/MR.pdf](https://hades.mech.northwestern.edu/images/7/7f/MR.pdf))
 
 Use of $SE(3)$ and $SO(3)$ Lie groups to encode some of the key concepts of rotations and rigid-body motions in 3D.
 
@@ -42,7 +42,7 @@ In the base frame, we call this equation the _space form_ :
 
 $\cdot$ Suppose joint $n$ is displaced by to some joint value $\theta_n$. The end-effector frame $M$ then undergoes a displacement of the form 
 ```math 
-T = e^{[\mathcal{S}_n]\theta_n}M$, where $T \in SE(3)
+T = e^{[\mathcal{S}_n]\theta_n}M, \: where \: T \in SE(3)
 ``` 
 is the new configuration of the end-effector frame.
 

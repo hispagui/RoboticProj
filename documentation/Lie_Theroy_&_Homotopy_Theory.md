@@ -5,7 +5,7 @@ These notes serve as a quick reminder of the theory behind some of the concepts 
 ### SO(3) and SE(3) are Lie groups
 
 __Definition__ :
-A _Lie group_ is a subset $G$ of $\mathbb{R}^n$ such that $G$ is a group and a manifold in $\mathbb{R}^n$ and both the group operation $\cdot : G\rightarrow G$ and the inverse operation $.^{-1}: G\rightarrow G$ are smooth functions.
+A _Lie group_ is a subset $G$ of $\mathbb{R}^n$ such that $G$ is a group and a manifold in $\mathbb{R}^n$ and both the group operation $\cdot : G \times G \rightarrow G$ and the inverse operation $\_^{-1}: G\rightarrow G$ are smooth functions.
 
 __Definition__ :
 A _Lie algebra_ is an algebra $A$ togther with a _Lie bracket_ operator $\[.,.\] : A \times A \rightarrow A$.
@@ -65,11 +65,6 @@ These are the exact concepts we used when writting the interpolation functions f
 
 
 
-
-
-
-
-
 ## Homotopy and Homology theory
 
 __Definition__ : A _homotopy_ between two continuous functions $f$ and $g$ from $X$ to $Y$ is a continuous function $H : X \times [0,1]  \rightarrow Y$ such that $H(x,0) = f(x)$ and $H(x,1) = g(x)$ for all $x\in X$.
@@ -83,7 +78,7 @@ __Example__ : The fundamental group of $\mathbb{R}^2$ is trivial, $\pi_1(\mathbb
 
 __Definition__ : Let $X$ be a topological space and $(C_{\star}, d_{\star})$ a _chain complexe_, with $d_n : C_n \rightarrow C_{n-1}$, each $C_n$ is an abelian group and $d_{n-1} \circ d_n = 0 \: \forall \: n$.
 We define $B_n :=$ im $d_{n+1}$ and $Z_n := \ker\: d_n$ to be respectivelly the group of _boundaries_ and the group of _cycles_.
-Finally $H_n(X) := Z_n /B_n$ is the n$^{th}$ _homology group_.
+Finally $H_n(X) := Z_n /B_n$ is the $n^{th}$ _homology group_.
 
 
 __Theorem (Hurewicz)__ : For $X$ connected, there exists a homomorphism $h : \pi_1(X) \rightarrow H_1(X)$ which is surjective and $\ker \: h = [\pi_1(X), \pi_1(X)]$ the commutator subgroup. This implies that the abelianisation of the first fundamental group is isomorphic to the first homology group, $\pi_1(X)^{ab} \cong H_1(X)$.
