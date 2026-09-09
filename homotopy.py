@@ -8,8 +8,8 @@ homotopy.py : topological signatures of paths in R^2 minus a set of points (punc
                         (cheaper than reduce_word)
 
                              
-                             This is the invariant you
-                             augment A* with in planners/topo_astar.py.
+                        
+    To add : A* planners and comparisons
 
 """
 

@@ -1,5 +1,3 @@
 test.py
-pose_interpolation.py
 pose_interpolation.gif
-inverse_kin_tracking.py
-ik_tracking.gif
+inverse_kinematics_tracking.gif

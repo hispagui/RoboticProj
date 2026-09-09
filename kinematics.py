@@ -49,6 +49,11 @@ class Manipulator :
     def __repr__(self):
         return f"Manipulator(name={self.name!r}, dof={self.dof})"
 
+    def sanity_check(self, pose):
+        # check if pose is accessible by manipulator
+        """TO DO !!!!!"""
+        pass
+
 
     # ---------------------------------------------------------------
     # forward kinematics (thetas => EE pose)
@@ -66,6 +71,9 @@ class Manipulator :
         ee_pos = se3.split(self.fk(thetas))[1]
         return ee_pos
 
+    # ---------------------------------------------------------------
+    # skeleton tracking and reachability 
+    # ---------------------------------------------------------------
     def skeleton(self, thetas : np.ndarray) -> np.ndarray:
         # nb of screws = nb of vertices in skeleton
         """  check again  """
@@ -84,6 +92,50 @@ class Manipulator :
             pts.append((G[k] @ hom)[:3])
         return np.array(pts)
 
+    def max_reach(self) -> float:
+        # a revolute serial chain can't extend past the sum of its link lengths
+        pts = self.skeleton(np.zeros(self.dof))
+        p_ee = self.ee_position(np.zeros(self.dof))
+        pts = np.vstack([pts, p_ee])                # make sure the tool tip is included
+        seg = np.linalg.norm(np.diff(pts, axis=0), axis=1)
+        return float(seg.sum())
+
+    def _within_limits(self, theta : np.ndarray, tol=1e-9) -> bool:
+        # takes joint_limits into account
+        if self.joint_limits is None:
+            return True
+        lo, hi = self.joint_limits[:, 0], self.joint_limits[:, 1]
+        return bool(np.all(theta >= lo - tol) and np.all(theta <= hi + tol))
+
+    def is_reachable(self, T : np.ndarray, pos_tol=1e-4, restarts=8, return_solution=False):
+        # decides reachability of pose, (not a proof but strong evidence)
+        # first check radius of sum of lengths of manip. 
+        # then numerical IK check
+
+        T = np.asarray(T, float)
+        if T.shape != (4, 4):
+            raise ValueError("goal pose must be a 4x4 matrix in SE(3)")
+        R, p = se3.split(T)
+        if (not np.allclose(R.T @ R, np.eye(3), atol=1e-6) or not np.isclose(np.linalg.det(R), 1.0, atol=1e-6)):
+            raise ValueError("rotation block of goal pose is not in SO(3)")
+
+        p_base = self.skeleton(np.zeros(self.dof))[0]
+        if np.linalg.norm(p - p_base) > self.max_reach() + pos_tol: # if outside of radius of sum of lengths
+            return (False, None) if return_solution else False
+
+        for attempt in range(restarts):
+            theta, ok = self.numerical_ik(T, seed=attempt)
+            if not ok:
+                continue
+            # re check fk on theta,
+            # _finish_ik can move solution off the target, verifies accuracy and feasability
+            if (se3.geodesic_distance(self.fk(theta), T) < pos_tol  
+                    and self._within_limits(theta)):
+                return (True, theta) if return_solution else True
+            
+        return (False, None) if return_solution else False
+
+    
 
     # ---------------------------------------------------------------
     # Jacobians (velocities)
@@ -232,8 +284,7 @@ class Manipulator :
             theta = np.clip(theta, self.joint_limits[:,0], self.joint_limits[:,1])
         return theta
 
-
-
+    
 
     # ---------------------------------------------------------------
     # interpolation 
@@ -250,69 +301,3 @@ class Manipulator :
         return traj_pts
     
 
-
-
-
-def practice_6dof():
-    # test encoding of 6r arm (no offset)
-    L1, L2, L3, L4 = 0.40, 0.40, 0.20, 0.10 # lengts
-    joints = [
-        ([0, 0, 1], [0, 0, 0]),                    # base yaw
-        ([0, 1, 0], [0, 0, L1]),                   # shoulder pitch
-        ([0, 1, 0], [0, 0, L1 + L2]),              # elbow pitch
-        ([0, 0, 1], [0, 0, L1 + L2 + L3]),         # wrist roll
-        ([0, 1, 0], [0, 0, L1 + L2 + L3]),         # wrist pitch
-        ([0, 0, 1], [0, 0, L1 + L2 + L3]),         # wrist roll
-    ]
-    M = se3.make(np.eye(3), [0, 0, L1 + L2 + L3 + L4]) # zero-position 
-    # skeleton for drawing: base, shoulder, elbow, wrist, tool tip.
-    draw_points = [
-        (0, [0, 0, 0]),                        # base (fixed)
-        (1, [0, 0, L1]),                       # after joint 1
-        (2, [0, 0, L1 + L2]),                  # after joint 2
-        (3, [0, 0, L1 + L2 + L3]),             # wrist (after joint 3)
-        (6, [0, 0, L1 + L2 + L3 + L4]),        # tool tip (after all joints)
-    ]
-    return Manipulator.from_revolute(joints, M, name="didactic_6dof",
-                                     draw_points=draw_points)
-
-
-
-
-
-if __name__ == "__main__":
-    arm = practice_6dof()
-    print(arm)
- 
-    # fk sanity: at the zero config the tool sits at the top of the chain.
-    assert np.allclose(arm.ee_position(np.zeros(6)), [0, 0, 1.10], atol=1e-12)
- 
-    # The evaluation: analytic vs finite-difference Jacobian.
-    err = arm.validate()
-    print(f"space Jacobian analytic vs finite-difference: max error {err:.2e}")
- 
-    # Task-space use.
-    rng = np.random.default_rng(1)
-    a, b = rng.uniform(-1, 1, 6), rng.uniform(-1, 1, 6)
-    print(f"EE geodesic distance (length_scale=1.0): "
-          f"{arm.geodesic_distance(a, b):.4f}")
-    traj = arm.cartesian_trajectory(a, b, n=20)
-    print(f"generated a {len(traj)}-pose Cartesian trajectory")
-    assert arm.body_jacobian(a).shape == (6, 6)
- 
-    # Inverse kinematics: recover joint angles that reach random reachable poses.
-    rng2 = np.random.default_rng(7)
-    reached = 0
-    trials = 50
-
-    for _ in range(trials):
-        T_goal = arm.fk(rng2.uniform(-np.pi, np.pi, 6))
-        for attempt in range(6):                       # a few random restarts
-            th_sol, ok = arm.numerical_ik(T_goal, seed=attempt)
-            if ok:
-                break
-        if ok and se3.geodesic_distance(arm.fk(th_sol), T_goal) < 1e-4:
-            reached += 1
-    print(f"inverse kinematics reached {reached}/{trials} random poses")
-    print("\nkinematics.py: all checks passed "
-          "(so3/se3 validated on the 6-DOF chain).")

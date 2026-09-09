@@ -3,7 +3,7 @@ These notes are made using the incredibly weel written _Modern Robotics : Mechan
 
 Use of $SE(3)$ and $SO(3)$ Lie groups to encode some of the key concepts of rotations and rigid-body motions in 3D.
 
-__Notations :__ Suppose we have a robot consisting of $n$ links. \\
+__Notations :__ Suppose we have a robot consisting of $n$ links. 
 
 $\cdot$ The link reference frames are respectively labeled $\{1\}, \{2\}, ..., \{n\}$, with $\{0\} = \{b\}$ being the base frame and $\{e\}$ being the end-effector's frame attached to the last link. The link lengths are denoted by $L_1, L_2, ..., L_n$, and the joint angles are given by $\theta_1, \theta_2, ..., \theta_n$.
 
