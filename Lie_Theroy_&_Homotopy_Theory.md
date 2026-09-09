@@ -1,4 +1,4 @@
-
+\DeclareMathOperator{\im}{im}
 
 ## Lie Theory and Riemannian Geometry
 
@@ -79,10 +79,10 @@ __Definition__ : Two paths $\gamma_1$ and $\gamma_2$ are said to be _homotopic_ 
 
 __Definition__ : The _fundamental group_ of a pointed topological space $(X,x)$ denoted $\pi_1(X,x)$ is the group of equivalence classes under homotopy of the loops based at $x$ in $X$.
 
-__Example__ : The fundamental group of $\mathbb{R}^2$ is trivial, $\pi_1(\mathbb{R}^2 - \{p\}) = \mathbb{Z}$ and $\pi_1(\mathbb{R}^2 - \left\{p_1, p_2, ..., p_n \right\}) = F_n$ the free group on $n$ generators.
+__Example__ : The fundamental group of $\mathbb{R}^2$ is trivial, $\pi_1(\mathbb{R}^2 - \{p\}) = \mathbb{Z}$ and $\pi_1(\mathbb{R}^2 - \lbrace p_1, p_2, ..., p_n \rbrace) = F_n$ the free group on $n$ generators.
 
 
-__Definition__ : Let $X$ be a topological space and $(C_{\star}, d_{\star})$ a _chain complexe_, with $d_n : C_n \rightarrow C_{n-1}, each $C_n$ is an abelian group and $d_{n-1} \circ d_n = 0 \forall n$.
+__Definition__ : Let $X$ be a topological space and $(C_{\star}, d_{\star})$ a _chain complexe_, with $d_n : C_n \rightarrow C_{n-1}$, each $C_n$ is an abelian group and $d_{n-1} \circ d_n = 0 \: \forall \: n$.
 We define $B_n := \im d_{n+1}$ and $Z_n := \ker\: d_n$ to be respectivelly the group of _boundaries_ and the group of _cycles_.
 Finally $H_n(X) := Z_n /B_n$ is the n$^{th}$ _homology group_.
 
