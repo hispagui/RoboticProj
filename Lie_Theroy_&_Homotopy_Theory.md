@@ -1,7 +1,6 @@
-\DeclareMathOperator{\im}{im}
+These notes serve as a quick reminder of the theory behind some of the concepts applied in this project.
 
 ## Lie Theory and Riemannian Geometry
-
 
 ### SO(3) and SE(3) are Lie groups
 
@@ -83,7 +82,7 @@ __Example__ : The fundamental group of $\mathbb{R}^2$ is trivial, $\pi_1(\mathbb
 
 
 __Definition__ : Let $X$ be a topological space and $(C_{\star}, d_{\star})$ a _chain complexe_, with $d_n : C_n \rightarrow C_{n-1}$, each $C_n$ is an abelian group and $d_{n-1} \circ d_n = 0 \: \forall \: n$.
-We define $B_n := \im d_{n+1}$ and $Z_n := \ker\: d_n$ to be respectivelly the group of _boundaries_ and the group of _cycles_.
+We define $B_n :=$ im $d_{n+1}$ and $Z_n := \ker\: d_n$ to be respectivelly the group of _boundaries_ and the group of _cycles_.
 Finally $H_n(X) := Z_n /B_n$ is the n$^{th}$ _homology group_.
 
 
