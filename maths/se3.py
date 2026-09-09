@@ -8,7 +8,7 @@ se3.py : the Special Euclidean group (Lie group, also algebraic).
 """
 
 import numpy as np
-import so3
+from maths import so3
 _EPS = 1e-10  # used to avoid errors when computing with small angle thetas
 
 

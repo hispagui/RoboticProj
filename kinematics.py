@@ -8,8 +8,8 @@ kinameatics.py : 6-DOF manipulator
 
 
 import numpy as np
-import so3
-import se3
+from maths import so3
+from maths import se3
 import math
 
 def screw_axis(omega : np.ndarray, q : np.ndarray) -> np.ndarray:

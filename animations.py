@@ -5,8 +5,8 @@ animations.py -- animations for : - SO(3)/SE(3) interpolation (screwed and decou
 
 import os
 import numpy as np
-import so3
-import se3
+from maths import so3
+from maths import se3
 import kinematics
 import matplotlib
 matplotlib.use("Agg") # saves to file
@@ -227,7 +227,7 @@ my_poses.anim_pose_inerpolation()
 
 
 
-'''
+
 def practice_6dof():
     # test encoding of 6r arm (no offset)
     L1, L2, L3, L4 = 0.40, 0.40, 0.20, 0.10 # lengts
@@ -252,4 +252,4 @@ print(arm)
 T_goal = se3.make(np.eye(3), [0.3, 0.3, 0.7]) # this pose is reachable
 animate_arm = Kins(arm, T_goal, N=60)
 animate_arm.anim_inverse_kinematics()
-'''
+
